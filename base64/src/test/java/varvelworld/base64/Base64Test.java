@@ -17,4 +17,10 @@ public class Base64Test {
         Assert.assertEquals(new String(java.util.Base64.getEncoder().encode("hello world".getBytes()))
                 , Base64.encrypt("hello world".getBytes()));
     }
+
+    @Test
+    public void testDecrypt() {
+        Assert.assertArrayEquals("hello world".getBytes()
+                , Base64.decrypt(new String(java.util.Base64.getEncoder().encode("hello world".getBytes()))));
+    }
 }
