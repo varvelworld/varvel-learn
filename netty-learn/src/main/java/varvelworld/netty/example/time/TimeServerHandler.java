@@ -1,7 +1,7 @@
 package varvelworld.netty.example.time;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -11,12 +11,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 public class TimeServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        final ByteBuf time = ctx.alloc().buffer(4);
-        // The Time service sends back to the originating source the time in
-        // seconds since midnight on January first 1900
-        time.writeInt((int)(System.currentTimeMillis() / 1000L + 2208988800L));
-        final ChannelFuture f = ctx.writeAndFlush(time);
-        f.addListener(future -> {assert f == future; ctx.close();});
+        ChannelFuture f = ctx.writeAndFlush(new UnixTime());
+        f.addListener(ChannelFutureListener.CLOSE);
     }
 
     @Override

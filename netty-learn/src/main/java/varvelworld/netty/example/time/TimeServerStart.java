@@ -13,6 +13,6 @@ public class TimeServerStart {
         } else {
             port = 8080;
         }
-        new NettyServer(port, TimeDecoder::new, TimeServerHandler::new).run();
+        new NettyServer(port, TimeEncoder::new, TimeServerHandler::new).run();
     }
 }
